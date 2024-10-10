@@ -1,21 +1,35 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <script type="text/javascript" src="script.js" defer></script>
-     </head>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idle Miner Game</title>
+    <link rel="stylesheet" href="style.css"> <!-- Ajout du fichier CSS -->
+    <script type="text/javascript" src="script.js" defer></script>
+</head>
+<body>
+    <div id="game-container">
+        <!-- Partie gauche -->
+        <div id="left-section">
+            <img src="images/pierre_or.png" alt="image à cliquer" id="clique">
+            <p id="score">Score : 0</p>
+        </div>
 
-    <body>
-        <img src="images/pierre_or.png" alt="bug" id="clique">
-        
-        <p id="score">Score : 0</p>
-        <br>
-        <br>
-        <p id="score_attente">Score d'attente : 0</p>
-        <btn id="acheter_bonus_clique"></btn>
-        <br>
-        <btn id="autoclicker"></btn>
-        
-    </body>
+        <!-- Partie milieu -->
+        <div id="middle-section">
+            <div class="etage" id="score_attente">
+                <p>Score d'attente : 0</p>
+            </div>
+            <!-- Ajoute d'autres étages si nécessaire -->
+        </div>
 
+        <!-- Partie droite : Boutons d'achat -->
+        <div id="right-section">
+            <button id="acheter_bonus_clique">Acheter un bonus de clic</button>
+            <button id="autoclicker">Acheter l'autoclicker</button>
+            <button id="augmenter_max_attente">Augmenter le plafond</button>
+            <button id="accelerer_transport">Augmenter la rapidité du transport</button>
+        </div>
+    </div>
+</body>
 </html>
