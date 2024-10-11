@@ -106,3 +106,16 @@ body {
     background: #888;
     border-radius: 10px;
 }
+
+/* Creer popup hover*/
+
+#elementToPopup_bonus, #elementToPopup_autoclicker, #elementToPopup_max_attente, #elementToPopup_transport {
+    display: none;
+    position: absolute;
+    top: 30px;
+    left: 7px;
+    background-color: #555;
+    color: #fff;
+    padding: 8px;
+    border-radius: 5px;
+}
