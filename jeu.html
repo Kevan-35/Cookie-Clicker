@@ -14,7 +14,6 @@
 
         <!-- Partie gauche -->
         <div id="left-section">
-            <img src="images/pierre_or.png" alt="image à cliquer" id="clique">
             <p id="score">Score : 0</p>
         </div>
 
@@ -22,10 +21,15 @@
         
         <!-- Partie milieu -->
         <div id="middle-section">
-            <div class="etage" id="score_attente">
-                <p>Score d'attente : 0</p>
+            <div class="etage" id="etage-1">
+                <img src="images/pierre.png" alt="image à cliquer" id="clique_pierre">
             </div>
-            <!-- Ajoute d'autres étages si nécessaire -->
+            <div class="etage" id="etage-1">
+                <img src="images/or.png" alt="image à cliquer" id="clique">
+            </div>
+            <div class="etage" id="etage-1">
+                <img src="images/pierre_rose.png" alt="image à cliquer" id="clique_pierre">
+            </div>
         </div>
 
 
@@ -48,22 +52,6 @@
             </div>
             <div id="elementToPopup_autoclicker">
                 <span>Nombre d'autoclickers : 0</span>
-            </div>
-        
-            <!-- Achat max attente -->
-            <div id="elementToHover_max_attente">
-                <button id="augmenter_max_attente">Augmenter le plafond</button>
-            </div>
-            <div id="elementToPopup_max_attente">
-                <span>Nombre de plafonds augmentés : 0</span>
-            </div>
-        
-            <!-- Achat accélérer transport -->
-            <div id="elementToHover_transport">
-                <button id="accelerer_transport">Augmenter la rapidité du transport</button>
-            </div>
-            <div id="elementToPopup_transport">
-                <span>Nombre d'accélérations : 0</span>
             </div>
         </div>
         
