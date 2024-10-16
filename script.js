@@ -13,16 +13,30 @@
             this.prix_acheter_bonus_clique = 18
             this.prix_autoclicker = 15
 
+            this.update_acheter_bonus_clique_button()
+            this.update_autoclicker_button()
+
         }
-        update_acheter_bonus_clique_button(acheter_bonus_cliqueButton) {
-            acheter_bonus_cliqueButton.textContent = "Acheter le multiplicateur : " + this.prix_acheter_bonus_clique; 
+        update_dom(element, message){
+            element.textContent = message; 
+        
         }
-        update_autoclicker_button(autoclickerButton) {
-            autoclickerButton.textContent = "Acheter l'autoclicker : " + this.prix_autoclicker; 
+        update_score() {
+            let score = document.getElementById("score");
+            this.update_dom(score, "Score : " + this.score);
+        }
+        update_acheter_bonus_clique_button() {
+            let acheter_bonus_cliqueButton = document.getElementById("acheter_bonus_clique");
+            this.update_dom(acheter_bonus_cliqueButton, "Acheter le multiplicateur : " + this.prix_acheter_bonus_clique); 
+        }
+        update_autoclicker_button() {
+            let autoclickerButton = document.getElementById("autoclicker");
+            this.update_dom(autoclickerButton, "Acheter l'autoclicker : " + this.prix_autoclicker); 
         }
         click(){
             this.score += this.one_click
             this.total_score += this.one_click
+            this.update_score()
         }
         bonus_clique(){
             this.one_click += 1
@@ -35,6 +49,8 @@
 
                 this.nb_bonus_clique += 1
                 console.log(this.nb_bonus_clique)
+                this.update_score()
+                this.update_acheter_bonus_clique_button()
             }
         }
         timer(){
@@ -54,6 +70,8 @@
                 console.log(this.score)
 
                 this.nb_autoclicker += 1
+                this.update_autoclicker_button()
+                this.update_score()
             }
         }        
     }
@@ -62,33 +80,24 @@
     const game = new Game();
     clique = document.getElementById("clique")
     score = document.getElementById("score")
-    acheter_bonus_clique = document.getElementById("acheter_bonus_clique")
     autoclicker = document.getElementById("autoclicker")
 
     // popup hover
     elementToHover = document.getElementById("elementToHover")
     elementToPopup = document.getElementById("elementToPopup")
-    
-
-    game.update_acheter_bonus_clique_button(acheter_bonus_clique)
-    game.update_autoclicker_button(autoclicker)
 
     
     clique.addEventListener("click", function() {
         game.click()
-        score.textContent = "Score : " + game.score;
+        
     }); 
-    
+    let acheter_bonus_clique = document.getElementById("acheter_bonus_clique")
     acheter_bonus_clique.addEventListener("click", function() {
         game.acheter_bonus_clique()  
-        score.textContent = "Score : " + game.score;
-        acheter_bonus_clique.textContent = "Acheter le multiplicateur : " + game.prix_acheter_bonus_clique;
     });
 
     autoclicker.addEventListener("click", function() {
         game.autoclicker()
-        score.textContent = "Score : " + game.score;
-        autoclicker.textContent = "Acheter l'autoclicker : " + game.prix_autoclicker;
     });
     
    
