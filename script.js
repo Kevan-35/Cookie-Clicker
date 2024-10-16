@@ -16,6 +16,34 @@
             this.update_acheter_bonus_clique_button()
             this.update_autoclicker_button()
 
+            this.etages = []
+            this.initEtage()
+            this.displayEtages()
+
+        }
+        initEtage(){
+            this.etages.push(new Etage("Or", "images/or.png"))
+            
+        }
+        displayEtages(){
+            let parent = document.querySelector('#middle-section')
+            this.etages.forEach(etage => {
+                let html_etage = document.createElement('div');
+                html_etage.className = "etage";
+                html_etage.title='clique moi dessus!';
+
+                let img = document.createElement('img');
+                img.src = etage.image_minerai;
+                img.alt= "image à cliquer";
+
+                html_etage.appendChild(img)
+                let that = this;
+                html_etage.addEventListener("click", function() {
+                    that.click(etage)                    
+                }); 
+                
+                parent.appendChild(html_etage)
+            });
         }
         update_dom(element, message){
             element.textContent = message; 
@@ -33,7 +61,9 @@
             let autoclickerButton = document.getElementById("autoclicker");
             this.update_dom(autoclickerButton, "Acheter l'autoclicker : " + this.prix_autoclicker); 
         }
-        click(){
+        click(toto){
+            console.log(this)
+            console.log(toto)
             this.score += this.one_click
             this.total_score += this.one_click
             this.update_score()
@@ -58,7 +88,7 @@
                 this.score += 1
                 score.textContent = "Score : " + this.score;
 
-                console.log(this.score)
+                console.lgameog(this.score)
             }, 1000);
         }
         autoclicker(){ // Achat
@@ -87,10 +117,7 @@
     elementToPopup = document.getElementById("elementToPopup")
 
     
-    clique.addEventListener("click", function() {
-        game.click()
-        
-    }); 
+   
     let acheter_bonus_clique = document.getElementById("acheter_bonus_clique")
     acheter_bonus_clique.addEventListener("click", function() {
         game.acheter_bonus_clique()  
