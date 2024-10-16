@@ -3,13 +3,11 @@
             // init
             this.total_score = 0 
             this.score = 0
-            this.one_click = 1
-            this.max_score = 20
-            this.timer_transport = 5000
+            this.one_click = 1  
 
             // count
             this.nb_bonus_clique = 0
-            this.nb_autoclicker = 0
+            this.nb_autoclicker = 0 
 
             // prix
             this.prix_acheter_bonus_clique = 18
@@ -22,13 +20,9 @@
         update_autoclicker_button(autoclickerButton) {
             autoclickerButton.textContent = "Acheter l'autoclicker : " + this.prix_autoclicker; 
         }
-        increment_score() {
+        click(){
             this.score += this.one_click
             this.total_score += this.one_click
-        }
-        click(){
-            this.increment_score()
-
         }
         bonus_clique(){
             this.one_click += 1
