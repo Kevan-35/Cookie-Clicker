@@ -1,0 +1,183 @@
+From a199fc93d47437b766ad2d97fabf1544737ef378 Mon Sep 17 00:00:00 2001
+From: docusland <erwann.duclos@gmail.com>
+Date: Wed, 16 Oct 2024 11:27:42 +0200
+Subject: [PATCH] debut de refactoring avec Erwann
+
+---
+ index.html | 69 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ script.js  | 39 ++++++++++++++++++------------
+ 2 files changed, 93 insertions(+), 15 deletions(-)
+ create mode 100644 index.html
+
+diff --git a/index.html b/index.html
+new file mode 100644
+index 0000000..554fc4f
+--- /dev/null
++++ b/index.html
+@@ -0,0 +1,69 @@
++<!DOCTYPE html>
++<html lang="fr">
++
++<head>
++    <meta charset="UTF-8">
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <title>Cookie Clicker</title>
++    <link rel="stylesheet" href="style.css"> <!-- Ajout du fichier CSS -->
++    <script type="text/javascript" src="etage.js" defer></script>
++    <script type="text/javascript" src="script.js" defer></script>
++    <script type="text/javascript" src="popup_hover.js" defer></script>
++
++</head>
++
++<body>
++    <div id="game-container">
++
++
++        <!-- Partie gauche -->
++        <div id="left-section">
++            <p id="score">Score : 0</p>
++        </div>
++
++        <style>
++            #etage-2:hover {
++                cursor: pointer;
++            }
++        </style>
++
++        <!-- Partie milieu -->
++        <div id="middle-section">
++            <div class="etage" id="etage-1">
++                <img src="images/pierre.png" alt="image à cliquer" id="clique_pierre">
++            </div>
++            <div class="etage" id="etage-2" title="clique sur moi">
++                <img src="images/or.png" alt="image à cliquer" id="clique">
++            </div>
++            <div class="etage" id="etage-3">
++                <img src="images/pierre_rose.png" alt="image à cliquer" id="clique_pierre">
++            </div>
++        </div>
++
++
++
++        <!-- Partie droite : Boutons d'achat -->
++
++        <!-- Achat bonus_clique-->
++        <div id="right-section">
++            <!-- Achat bonus_clique -->
++            <div id="elementToHover_bonus">
++                <button id="acheter_bonus_clique">Acheter un bonus de clique</button>
++            </div>
++            <div id="elementToPopup_bonus">
++                <span>Nombre de bonus clique : 0</span>
++            </div>
++
++            <!-- Achat autoclicker -->
++            <div id="elementToHover_autoclicker">
++                <button id="autoclicker">Acheter l'autoclicker</button>
++            </div>
++            <div id="elementToPopup_autoclicker">
++                <span>Nombre d'autoclickers : 0</span>
++            </div>
++        </div>
++
++    </div>
++</body>
++
++</html>
+\ No newline at end of file
+diff --git a/script.js b/script.js
+index fc74d0a..ae28538 100644
+--- a/script.js
++++ b/script.js
+@@ -13,16 +13,30 @@
+             this.prix_acheter_bonus_clique = 18
+             this.prix_autoclicker = 15
+ 
++            this.update_acheter_bonus_clique_button()
++            this.update_autoclicker_button()
++
++        }
++        update_dom(element, message){
++            element.textContent = message; 
++        
++        }
++        update_score() {
++            let score = document.getElementById("score");
++            this.update_dom(score, "Score : " + this.score);
+         }
+-        update_acheter_bonus_clique_button(acheter_bonus_cliqueButton) {
+-            acheter_bonus_cliqueButton.textContent = "Acheter le multiplicateur : " + this.prix_acheter_bonus_clique; 
++        update_acheter_bonus_clique_button() {
++            let acheter_bonus_cliqueButton = document.getElementById("acheter_bonus_clique");
++            this.update_dom(acheter_bonus_cliqueButton, "Acheter le multiplicateur : " + this.prix_acheter_bonus_clique); 
+         }
+-        update_autoclicker_button(autoclickerButton) {
+-            autoclickerButton.textContent = "Acheter l'autoclicker : " + this.prix_autoclicker; 
++        update_autoclicker_button() {
++            let autoclickerButton = document.getElementById("autoclicker");
++            this.update_dom(autoclickerButton, "Acheter l'autoclicker : " + this.prix_autoclicker); 
+         }
+         click(){
+             this.score += this.one_click
+             this.total_score += this.one_click
++            this.update_score()
+         }
+         bonus_clique(){
+             this.one_click += 1
+@@ -35,6 +49,8 @@
+ 
+                 this.nb_bonus_clique += 1
+                 console.log(this.nb_bonus_clique)
++                this.update_score()
++                this.update_acheter_bonus_clique_button()
+             }
+         }
+         timer(){
+@@ -54,6 +70,8 @@
+                 console.log(this.score)
+ 
+                 this.nb_autoclicker += 1
++                this.update_autoclicker_button()
++                this.update_score()
+             }
+         }        
+     }
+@@ -62,33 +80,24 @@
+     const game = new Game();
+     clique = document.getElementById("clique")
+     score = document.getElementById("score")
+-    acheter_bonus_clique = document.getElementById("acheter_bonus_clique")
+     autoclicker = document.getElementById("autoclicker")
+ 
+     // popup hover
+     elementToHover = document.getElementById("elementToHover")
+     elementToPopup = document.getElementById("elementToPopup")
+-    
+-
+-    game.update_acheter_bonus_clique_button(acheter_bonus_clique)
+-    game.update_autoclicker_button(autoclicker)
+ 
+     
+     clique.addEventListener("click", function() {
+         game.click()
+-        score.textContent = "Score : " + game.score;
++        
+     }); 
+-    
++    let acheter_bonus_clique = document.getElementById("acheter_bonus_clique")
+     acheter_bonus_clique.addEventListener("click", function() {
+         game.acheter_bonus_clique()  
+-        score.textContent = "Score : " + game.score;
+-        acheter_bonus_clique.textContent = "Acheter le multiplicateur : " + game.prix_acheter_bonus_clique;
+     });
+ 
+     autoclicker.addEventListener("click", function() {
+         game.autoclicker()
+-        score.textContent = "Score : " + game.score;
+-        autoclicker.textContent = "Acheter l'autoclicker : " + game.prix_autoclicker;
+     });
+     
+    
+-- 
+2.39.5
+

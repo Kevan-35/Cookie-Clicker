@@ -22,7 +22,14 @@
 
         }
         initEtage(){
+            this.etages.push(new Etage("Pierre", "images/pierre.png"))
             this.etages.push(new Etage("Or", "images/or.png"))
+            this.etages.push(new Etage("Diament", "images/diament.png"))
+            this.etages.push(new Etage("Emeraude", "images/emeraude.png"))
+
+
+            
+           
             
         }
         displayEtages(){
