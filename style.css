@@ -3,9 +3,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    user-select : none;
+    user-select: none;
 }
-
 
 body {
     font-family: Arial, sans-serif;
@@ -65,7 +64,6 @@ body {
     background-image: url("images/etages/grotte.png");
     background-size: cover; /* L'image couvre tout l'écran */
     background-position: center; /* Centré */
-    background-repeat: no-repeat; /* Pas de répétition de l'image */
     width: 90%;
     height: 30%;
     display: flex;
@@ -86,9 +84,13 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; /* Changed to 'flex-start' for proper alignment */
     align-items: center;
-    padding: 20px;
+    padding: 10px; /* Espace intérieur */
+    max-height: 400px; /* Hauteur maximale pour la section */
+    overflow-y: auto; /* Permet le défilement vertical */
+    border: 1px solid #ccc; /* Bordure pour délimiter la section */
+    width: 250px; /* Largeur fixe pour la section droite */
 }
 
 #right-section button {
@@ -117,8 +119,18 @@ body {
     border-radius: 10px;
 }
 
-/* Creer popup hover*/
 
+/* Rendre les boutons d'achats scrollables si la page est pleine */
+#right-section::-webkit-scrollbar {
+    width: 10px;
+}
+
+#right-section::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+/* Popup hover */
 #elementToPopup_bonus, #elementToPopup_autoclicker, #elementToPopup_max_attente, #elementToPopup_transport {
     display: none;
     position: absolute;
