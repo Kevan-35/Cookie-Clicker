@@ -1,23 +1,37 @@
-    // Bonus click popup
-    let hoverBonus = document.getElementById("elementToHover_bonus");
-    let popupBonus = document.getElementById("elementToPopup_bonus");
+function updatePopupContent(button, popup, nb_click, nb_autoclick) {
+    popup.textContent = button.classList.contains('bonus-click-button')
+        ? `Ce bonus de clic produit ${nb_click} par clic.`
+        : `Cet autoclicker produit ${nb_autoclick} par seconde.`;
+}
 
-    hoverBonus.addEventListener('mouseenter', function() {
-        popupBonus.style.display = 'block';
-        popupBonus.textContent = "Nombre de bonus click : " + game.total_bonus_click;
+function createHoverPopup(buttonElement, popupElement, etage) {
+    buttonElement.addEventListener('mouseenter', function() {
+        updatePopupContent(buttonElement, popupElement, etage.production_par_click, etage.production_par_seconde);
+        popupElement.style.display = 'block';
+        const rect = buttonElement.getBoundingClientRect();
+        popupElement.style.left = rect.left + "px";
+        popupElement.style.top = (rect.top + rect.height) + "px";
     });
-    hoverBonus.addEventListener('mouseleave', function() {
-        popupBonus.style.display = 'none';
+    buttonElement.addEventListener('mouseleave', function() {
+        popupElement.style.display = 'none';
     });
+}
 
-    // Autoclicker popup
-    let hoverAutoclicker = document.getElementById("elementToHover_autoclicker");
-    let popupAutoclicker = document.getElementById("elementToPopup_autoclicker");
+// Boucle pour chaque bouton d'achat
+function initializePopups() {
+    const hoverBonusButtons = document.querySelectorAll('.bonus-click-button');
+    const hoverAutoclickerButtons = document.querySelectorAll('.autoclicker-button');
+    hoverBonusButtons.forEach(button => {
+        const etageName = button.getAttribute("data-etage");
+        const etage = game.etages.find(e => e.nom_minerai === etageName);
+        createHoverPopup(button, document.getElementById("elementToPopup_bonus"), etage, etage.production_par_click, etage.production_par_seconde);
+    });
+    hoverAutoclickerButtons.forEach(button => {
+        const etageName = button.getAttribute("data-etage");
+        const etage = game.etages.find(e => e.nom_minerai === etageName);
+        createHoverPopup(button, document.getElementById("elementToPopup_autoclicker"), etage);
+    });
+}
 
-    hoverAutoclicker.addEventListener('mouseenter', function() {
-        popupAutoclicker.style.display = 'block';
-        popupAutoclicker.textContent = "Nombre d'autoclickers : " + game.total_autoclicker;
-    });
-    hoverAutoclicker.addEventListener('mouseleave', function() {
-        popupAutoclicker.style.display = 'none';
-    });
+// Initialisation des popups au chargement de la page
+initializePopups();

@@ -70,11 +70,36 @@ class Game {
             autoClickerButton.className = 'autoclicker-button';
             autoClickerButton.setAttribute("data-etage", etage.nom_minerai);
     
+
+            // Ajoutez les popups ici
+            bonusButton.addEventListener('mouseenter', function() {
+                const popupBonus = document.getElementById("elementToPopup_bonus");
+                popupBonus.style.display = 'block';
+                popupBonus.textContent = `Ce bonus de click produit ${etage.nb_bonus_click} par clic.`;
+                const rect = bonusButton.getBoundingClientRect();
+                popupBonus.style.left = rect.left + "px";
+                popupBonus.style.top = (rect.top + rect.height) + "px";
+            });
+            bonusButton.addEventListener('mouseleave', function() {
+                document.getElementById("elementToPopup_bonus").style.display = 'none';
+            });
+
+            autoClickerButton.addEventListener('mouseenter', function() {
+                const popupAutoclicker = document.getElementById("elementToPopup_autoclicker");
+                popupAutoclicker.style.display = 'block';
+                popupAutoclicker.textContent = `Cet autoclicker produit ${etage.nb_autoclick} par seconde.`;
+                const rect = autoClickerButton.getBoundingClientRect();
+                popupAutoclicker.style.left = rect.left + "px";
+                popupAutoclicker.style.top = (rect.top + rect.height) + "px";
+            });
+
+
             // Ajouter des listeners pour les boutons avec vérification des points
             bonusButton.addEventListener('click', () => {
                 if (this.score >= etage.prix_bonus_click) {
-                    this.score -= etage.prix_bonus_click;  // Déduire le coût
-                    etage.nb_click += etage.nb_bonus_click;  // Appliquer l'effet du bonus
+                    this.score -= etage.prix_bonus_click;  
+                    etage.nb_click += etage.nb_bonus_click; 
+                    etage.production_par_click += etage.nb_bonus_click;
                     console.log(`Bonus click acheté pour ${etage.nom_minerai}`);
                     this.update_score();
                 } else {
@@ -84,7 +109,7 @@ class Game {
             
             autoClickerButton.addEventListener('click', () => {
                 if (this.score >= etage.prix_autoclick) {
-                    this.score -= etage.prix_autoclick;  // Déduire le coût
+                    this.score -= etage.prix_autoclick; 
                     this.timer(etage);
                     console.log(this.score)
                     console.log(`Auto Clicker acheté pour ${etage.nom_minerai}`);
@@ -94,7 +119,7 @@ class Game {
                 }
             });
     
-            // Ajouter les boutons dans la section droite
+            // Ajouter boutons dans la section droite
             etageContainer.appendChild(bonusButton);
             etageContainer.appendChild(autoClickerButton);
             rightSection.appendChild(etageContainer);
@@ -105,7 +130,8 @@ class Game {
     timer(etage) {
         setInterval(() => {
             this.score += etage.nb_autoclick;
-            score.textContent = "Score : " + this.score;
+            etage.production_par_seconde += etage.nb_autoclick;
+            this.update_score();
             this.updateAcheterButtons(); 
         }, 1000);
     }
@@ -189,12 +215,27 @@ class Game {
     }
 
     click(etage) {
+        // Ajout de l'effet de zoom
+        const parent = document.querySelector('#middle-section');
+        const etageDiv = parent.children[this.etages.indexOf(etage)];
+        const img = etageDiv.querySelector('img');
+    
+        // Ajouter la classe zoom à l'image
+        img.classList.add('zoom');
+    
+        // Enlever la classe zoom après une courte durée
+        setTimeout(() => {
+            img.classList.remove('zoom');
+        }, 300); // Le temps doit correspondre à la durée de la transition dans le CSS
+    
+        // Augmenter le score
         this.score += etage.nb_click;
         this.total_score += etage.nb_click;
         this.update_score();
         this.updateAcheterButtons(); 
         this.checkUnlockableEtages();
     }
+    
 
     update_dom(element, message) {
         element.textContent = message; 

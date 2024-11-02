@@ -47,7 +47,7 @@ body {
     margin-top: 10px;
 }
 
-/* Section milieu (avec des étages) */
+/* Section milieu (avec les étages) */
 #middle-section {
     flex: 2;
     display: flex;
@@ -79,6 +79,13 @@ body {
     font-weight: bold;
 }
 
+.zoom { /* zomm des minerais lors du click*/
+    transform: scale(1.15); 
+    transition: transform 0.1s ease; 
+    z-index: 1; 
+}
+
+
 /* Section droite */
 #right-section {
     flex: 1;
@@ -87,7 +94,7 @@ body {
     justify-content: flex-start; /* Changed to 'flex-start' for proper alignment */
     align-items: center;
     padding: 10px; /* Espace intérieur */
-    max-height: 400px; /* Hauteur maximale pour la section */
+    max-height: 100%; /* Hauteur maximale pour la section */
     overflow-y: auto; /* Permet le défilement vertical */
     border: 1px solid #ccc; /* Bordure pour délimiter la section */
     width: 250px; /* Largeur fixe pour la section droite */
