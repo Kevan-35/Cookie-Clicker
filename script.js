@@ -21,7 +21,7 @@ class Game {
 
     displayEtages() {
         let parent = document.querySelector('#middle-section');
-        parent.innerHTML = '';
+        parent.innerHTML = ''; 
 
         this.etages.forEach((etage, index) => {
             let html_etage = document.createElement('div');
@@ -47,7 +47,7 @@ class Game {
 
     displayButtonsForEtage(etage) {
         let rightSection = document.querySelector('#right-section');
-    
+
         // Vérifier si les boutons pour cet étage existent déjà
         if (document.querySelector(`.bonus-click-button[data-etage="${etage.nom_minerai}"]`) || 
             document.querySelector(`.autoclicker-button[data-etage="${etage.nom_minerai}"]`)) {
@@ -56,6 +56,10 @@ class Game {
     
         // Si l'étage est acheté, afficher les boutons
         if (etage.est_achete) {
+            let etageContainer = document.createElement('div');
+            etageContainer.className = 'etage-container';
+            etageContainer.style.marginBottom = '12px';
+
             let bonusButton = document.createElement('button');
             bonusButton.textContent = `Acheter Bonus Click de ${etage.nom_minerai} pour ${etage.prix_bonus_click}`;
             bonusButton.className = 'bonus-click-button';
@@ -91,9 +95,11 @@ class Game {
             });
     
             // Ajouter les boutons dans la section droite
-            rightSection.appendChild(bonusButton);
-            rightSection.appendChild(autoClickerButton);
+            etageContainer.appendChild(bonusButton);
+            etageContainer.appendChild(autoClickerButton);
+            rightSection.appendChild(etageContainer);
         }
+        
     }
     
     timer(etage) {

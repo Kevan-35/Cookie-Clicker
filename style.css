@@ -109,6 +109,14 @@ body {
     background-color: #45a049;
 }
 
+.etage-container {
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1); /* Arrière-plan semi-transparent */
+    border-radius: 8px; /* Coins arrondis */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Bordure légère */
+}
+
+
 /* Rendre les étages scrollables si la page est pleine */
 #middle-section::-webkit-scrollbar {
     width: 10px;
