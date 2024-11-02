@@ -1,10 +1,10 @@
-    // Bonus clique popup
+    // Bonus click popup
     let hoverBonus = document.getElementById("elementToHover_bonus");
     let popupBonus = document.getElementById("elementToPopup_bonus");
 
     hoverBonus.addEventListener('mouseenter', function() {
         popupBonus.style.display = 'block';
-        popupBonus.textContent = "Nombre de bonus clique : " + game.nb_bonus_clique;
+        popupBonus.textContent = "Nombre de bonus click : " + game.total_bonus_click;
     });
     hoverBonus.addEventListener('mouseleave', function() {
         popupBonus.style.display = 'none';
@@ -16,7 +16,7 @@
 
     hoverAutoclicker.addEventListener('mouseenter', function() {
         popupAutoclicker.style.display = 'block';
-        popupAutoclicker.textContent = "Nombre d'autoclickers : " + game.nb_autoclicker;
+        popupAutoclicker.textContent = "Nombre d'autoclickers : " + game.total_autoclicker;
     });
     hoverAutoclicker.addEventListener('mouseleave', function() {
         popupAutoclicker.style.display = 'none';

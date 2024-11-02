@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cookie Clicker</title>
-    <link rel="stylesheet" href="style.css"> <!-- Ajout du fichier CSS -->
+    <link rel="stylesheet" href="style.css">
     <script type="text/javascript" src="etage.js" defer></script>
     <script type="text/javascript" src="script.js" defer></script>
-    <script type="text/javascript" src="popup_hover.js" defer></script>
 
 </head>
 
 <body>
+    <div class="background">
     <div id="game-container">
 
 
@@ -21,11 +21,6 @@
             <p id="score">Score : 0</p>
         </div>
 
-        <style>
-            #etage-2:hover {
-                cursor: pointer;
-            }
-        </style>
 
         <!-- Partie milieu -->
         <div id="middle-section">
@@ -37,25 +32,12 @@
         <!-- Partie droite : Boutons d'achat -->
 
         <!-- Achat bonus_click-->
-        <div id="right-section">
-            <!-- Achat bonus_click -->
-            <div id="elementToHover_bonus">
-                <button id="acheter_bonus_click">Acheter un bonus de click</button>
-            </div>
-            <div id="elementToPopup_bonus">
-                <span>Nombre de bonus click : 0</span>
-            </div>
-
-            <!-- Achat autoclicker -->
-            <div id="elementToHover_autoclicker">
-                <button id="autoclicker">Acheter l'autoclicker</button>
-            </div>
-            <div id="elementToPopup_autoclicker">
-                <span>Nombre d'autoclickers : 0</span>
-            </div>
+        <div id="right-section" >
+            
         </div>
 
     </div>
+</div>
 </body>
 
 </html>
