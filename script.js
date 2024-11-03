@@ -99,7 +99,7 @@ class Game {
                 if (this.score >= etage.prix_bonus_click) {
                     this.score -= etage.prix_bonus_click;  
                     etage.nb_click += etage.nb_bonus_click; 
-                    etage.production_par_click += etage.nb_bonus_click;
+                    etage.production_par_click = etage.nb_bonus_click;
                     etage.nb_bonus_click_achete += 1
                     etage.x_bonus_click_produit = Math.ceil(etage.nb_bonus_click_achete * etage.production_par_click)
                     console.log(`Bonus click acheté pour ${etage.nom_minerai}`);
