@@ -79,10 +79,33 @@ body {
     font-weight: bold;
 }
 
-.zoom { /* zomm des minerais lors du click*/
+.zoom { 
     transform: scale(1.15); 
     transition: transform 0.1s ease; 
     z-index: 1; 
+}
+
+/* Style de base pour le texte "+1" */
+.score-increment {
+    position: absolute;
+    color: #ffffff; 
+    font-size: 16px;
+    font-weight: bold;
+    pointer-events: none;
+    animation: floatUp 1s ease-out forwards;
+    z-index: 10;
+}
+
+/*  faire monter et disparaître l'élément */
+@keyframes floatUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-30px); /* le +1 monte de 30 pixels */
+    }
 }
 
 

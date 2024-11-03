@@ -1,12 +1,16 @@
-function updatePopupContent(button, popup, nb_click, nb_autoclick) {
-    popup.textContent = button.classList.contains('bonus-click-button')
-        ? `Ce bonus de clic produit ${nb_click} par clic.`
-        : `Cet autoclicker produit ${nb_autoclick} par seconde.`;
+function updatePopupContent(button, popup, production_par_click, production_par_seconde, nb_bonus_click_achete, nb_autoclick_achete, x_bonus_click_produit, x_autoclicker_produit, total_cookies_autoclicker) {
+    popup.innerHTML = button.classList.contains('bonus-click-button')
+        ? `Ce bonus de clic produit ${production_par_click} cookies par clic.<br>
+        ${nb_bonus_click_achete} bonus click produits ${x_bonus_click_produit} cookies juqu’à présent.`
+
+        : `Cet autoclicker produit ${production_par_seconde} par seconde.<br>
+        ${nb_autoclick_achete} autoclickers produisant ${x_autoclicker_produit} score.<br>
+        ${total_cookies_autoclicker} cookies produits juqu’à présent`;
 }
 
 function createHoverPopup(buttonElement, popupElement, etage) {
     buttonElement.addEventListener('mouseenter', function() {
-        updatePopupContent(buttonElement, popupElement, etage.production_par_click, etage.production_par_seconde);
+        updatePopupContent(buttonElement, popupElement, etage.production_par_click, etage.production_par_seconde, etage.nb_bonus_click_achete, etage.nb_autoclick_achete, etage.x_bonus_click_produit, etage.x_autoclicker_produit, etage.total_cookies_autoclicker);
         popupElement.style.display = 'block';
         const rect = buttonElement.getBoundingClientRect();
         popupElement.style.left = rect.left + "px";
@@ -17,7 +21,6 @@ function createHoverPopup(buttonElement, popupElement, etage) {
     });
 }
 
-// Boucle pour chaque bouton d'achat
 function initializePopups() {
     const hoverBonusButtons = document.querySelectorAll('.bonus-click-button');
     const hoverAutoclickerButtons = document.querySelectorAll('.autoclicker-button');
@@ -33,5 +36,4 @@ function initializePopups() {
     });
 }
 
-// Initialisation des popups au chargement de la page
 initializePopups();

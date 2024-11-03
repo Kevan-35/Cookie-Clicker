@@ -100,6 +100,8 @@ class Game {
                     this.score -= etage.prix_bonus_click;  
                     etage.nb_click += etage.nb_bonus_click; 
                     etage.production_par_click += etage.nb_bonus_click;
+                    etage.nb_bonus_click_achete += 1
+                    etage.x_bonus_click_produit = Math.ceil(etage.nb_bonus_click_achete * etage.production_par_click)
                     console.log(`Bonus click acheté pour ${etage.nom_minerai}`);
                     this.update_score();
                 } else {
@@ -111,6 +113,9 @@ class Game {
                 if (this.score >= etage.prix_autoclick) {
                     this.score -= etage.prix_autoclick; 
                     this.timer(etage);
+                    etage.production_par_seconde = etage.nb_autoclick;
+                    etage.nb_autoclick_achete += 1
+                    etage.x_autoclicker_produit = Math.ceil(etage.nb_autoclick_achete * etage.production_par_seconde)
                     console.log(this.score)
                     console.log(`Auto Clicker acheté pour ${etage.nom_minerai}`);
                     this.update_score();
@@ -130,11 +135,33 @@ class Game {
     timer(etage) {
         setInterval(() => {
             this.score += etage.nb_autoclick;
-            etage.production_par_seconde += etage.nb_autoclick;
+            etage.total_cookies_autoclicker += etage.nb_autoclick;
             this.update_score();
-            this.updateAcheterButtons(); 
+            this.updateAcheterButtons();
+    
+            const parent = document.querySelector('#middle-section');
+            const etageDiv = parent.children[this.etages.indexOf(etage)];
+            const img = etageDiv.querySelector('img');
+    
+            const autoIncrement = document.createElement('div');
+            autoIncrement.className = 'score-increment';
+            autoIncrement.textContent = `+${etage.nb_autoclick}`;
+    
+            const rect = img.getBoundingClientRect();
+            const randomOffsetX = (Math.random() - 0.5) * 100; 
+            const randomOffsetY = (Math.random() - 0.5) * 50; 
+            autoIncrement.style.left = `${rect.left + rect.width / 2 + randomOffsetX}px`;
+            autoIncrement.style.top = `${rect.top + randomOffsetY}px`;
+    
+            document.body.appendChild(autoIncrement);
+    
+            setTimeout(() => {
+                autoIncrement.remove();
+            }, 1000);
+    
         }, 1000);
     }
+    
     
 
     checkUnlockableEtages() {
@@ -215,26 +242,41 @@ class Game {
     }
 
     click(etage) {
-        // Ajout de l'effet de zoom
         const parent = document.querySelector('#middle-section');
         const etageDiv = parent.children[this.etages.indexOf(etage)];
         const img = etageDiv.querySelector('img');
     
-        // Ajouter la classe zoom à l'image
+        // Ajouter l'animation de zoom
         img.classList.add('zoom');
-    
-        // Enlever la classe zoom après une courte durée
         setTimeout(() => {
             img.classList.remove('zoom');
-        }, 300); // Le temps doit correspondre à la durée de la transition dans le CSS
+        }, 100);
     
-        // Augmenter le score
+        // Créer l'élément de texte pour "+1" (ou le nombre de points ajoutés)
+        const scoreIncrement = document.createElement('div');
+        scoreIncrement.className = 'score-increment';
+        scoreIncrement.textContent = `+${etage.nb_click}`;
+    
+        const rect = img.getBoundingClientRect();
+        const randomOffsetX = (Math.random() - 0.5) * 100; 
+        const randomOffsetY = (Math.random() - 0.5) * 50; 
+        scoreIncrement.style.left = `${rect.left + rect.width / 2 + randomOffsetX}px`;
+        scoreIncrement.style.top = `${rect.top + randomOffsetY}px`;
+    
+        document.body.appendChild(scoreIncrement);
+    
+        setTimeout(() => {
+            scoreIncrement.remove();
+        }, 1000);
+    
         this.score += etage.nb_click;
         this.total_score += etage.nb_click;
         this.update_score();
-        this.updateAcheterButtons(); 
+        this.updateAcheterButtons();
         this.checkUnlockableEtages();
     }
+    
+    
     
 
     update_dom(element, message) {
