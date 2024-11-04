@@ -103,7 +103,9 @@ class Game {
                     etage.nb_bonus_click_achete += 1
                     etage.x_bonus_click_produit = Math.ceil(etage.nb_bonus_click_achete * etage.production_par_click)
                     console.log(`Bonus click acheté pour ${etage.nom_minerai}`);
+                    console.log(`Après achat, nb_bonus_click_achete: ${etage.nb_bonus_click_achete}, x_bonus_click_produit: ${etage.x_bonus_click_produit}`);
                     this.update_score();
+                    initializePopups();
                 } else {
                     alert("Vous n'avez pas assez de points pour acheter ce bonus.");
                 }
@@ -115,10 +117,15 @@ class Game {
                     this.timer(etage);
                     etage.production_par_seconde = etage.nb_autoclick;
                     etage.nb_autoclick_achete += 1
-                    etage.x_autoclicker_produit = Math.ceil(etage.nb_autoclick_achete * etage.production_par_seconde)
+                    etage.x_autoclick_produit = Math.ceil(etage.nb_autoclick_achete * etage.production_par_seconde)
                     console.log(this.score)
                     console.log(`Auto Clicker acheté pour ${etage.nom_minerai}`);
+                    console.log(`Après achat, production_par_seconde: ${etage.production_par_seconde}, nb_autoclick_achete: ${etage.nb_autoclick_achete}, x_autoclick_produit: ${etage.x_autoclick_produit}, total_cookies_autoclicker: ${etage.total_cookies_autoclicker}`);
+                    console.log(`Cet autoclicker produit ${etage.production_par_seconde} par seconde.<br>
+                        ${etage.nb_autoclick_achete} autoclickers produisant ${etage.x_autoclick_produit} score.<br>
+                        ${etage.total_cookies_autoclicker} cookies produits juqu’à présent`)
                     this.update_score();
+                    initializePopups();
                 } else {
                     alert("Vous n'avez pas assez de points pour acheter cet auto-clicker.");
                 }
@@ -162,7 +169,6 @@ class Game {
         }, 1000);
     }
     
-    
 
     checkUnlockableEtages() {
         this.etages.forEach((etage, index) => {
@@ -190,6 +196,7 @@ class Game {
                         this.score -= etage.prix_etage;
                         this.displayEtages();
                         this.update_score();
+                        initializePopups();
                     });
                 }
 
