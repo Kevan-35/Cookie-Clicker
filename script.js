@@ -17,10 +17,10 @@ class Game {
     }
 
     initEtage() {
-        this.etages.push(new Etage("Pierre", "images/minerai/pierre.png", 1, 10, true, 6, 15, 1, 20));
-        this.etages.push(new Etage("Or", "images/minerai/or.png", 100, 10, false, 5, 100, 5, 200));
-        this.etages.push(new Etage("Diament", "images/minerai/diament.png", 1000, 100, false, 10, 1000, 20, 1000));
-        this.etages.push(new Etage("Emeraude", "images/minerai/emeraude.png", 10000, 1000, false, 20, 10000, 50, 10000));
+        this.etages.push(new Etage(1, "Pierre", "images/minerai/pierre.png", 1, 10, true, 6, 15, 1, 20));
+        this.etages.push(new Etage(2, "Or", "images/minerai/or.png", 100, 10, false, 5, 100, 5, 200));
+        this.etages.push(new Etage(3, "Diament", "images/minerai/diament.png", 1000, 100, false, 10, 1000, 20, 1000));
+        this.etages.push(new Etage(4, "Emeraude", "images/minerai/emeraude.png", 10000, 1000, false, 20, 10000, 50, 10000));
     }
 
     displayEtages() {
@@ -196,7 +196,9 @@ class Game {
         }, 100);
     
         const pointsGagnes = etage.nb_click * this.scoreMultiplier;
-    
+        
+        etage.points_gagnes_click += pointsGagnes;
+        console.log(etage.points_gagnes_click)
 
         // Créer l'élément de texte pour "+1" (le nombre de points ajoutés)
         const scoreIncrement = document.createElement('div');
@@ -220,8 +222,18 @@ class Game {
         this.update_score();
         this.updateAcheterButtons();
         this.checkUnlockableEtages();
+        this.boostEtage3(etage);
     }
 
+    boostEtage3(etage) {
+        if (etage.id === 1 && etage.points_gagnes_click >= 4000) { 
+            const etageSuperieur = this.etages[2]; 
+            etageSuperieur.nb_click *= 1.1; 
+            etageSuperieur.nb_autoclick *= 1.1; 
+            console.log(`La production de ${etageSuperieur.nom_minerai} a été augmentée de 10%!`);
+            etage.points_gagnes_click = 0; 
+        }
+    }
 
     checkUnlockableEtages() {
         this.etages.forEach((etage, index) => {
