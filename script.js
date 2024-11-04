@@ -10,10 +10,14 @@ class Game {
         this.etages = [];
         this.initEtage();
         this.displayEtages();
+
+        this.scoreMultiplier = 1;
+        this.apparaitreBouleXP();
+
     }
 
     initEtage() {
-        this.etages.push(new Etage("Pierre", "images/minerai/pierre.png", 1, 10, true, 1, 15, 1, 20));
+        this.etages.push(new Etage("Pierre", "images/minerai/pierre.png", 1, 10, true, 6, 15, 1, 20));
         this.etages.push(new Etage("Or", "images/minerai/or.png", 100, 10, false, 5, 100, 5, 200));
         this.etages.push(new Etage("Diament", "images/minerai/diament.png", 1000, 100, false, 10, 1000, 20, 1000));
         this.etages.push(new Etage("Emeraude", "images/minerai/emeraude.png", 10000, 1000, false, 20, 10000, 50, 10000));
@@ -34,7 +38,7 @@ class Game {
             img.alt = "image à clicker";
             
             html_etage.appendChild(img);
-            img.addEventListener("click", () => this.click(etage));
+            html_etage.addEventListener("click", () => this.click(etage));
             parent.appendChild(html_etage);
 
             // Afficher les boutons à droite si l'étage est acheté
@@ -62,12 +66,12 @@ class Game {
 
             let bonusButton = document.createElement('button');
             bonusButton.textContent = `Acheter Bonus Click de ${etage.nom_minerai} pour ${etage.prix_bonus_click}`;
-            bonusButton.className = 'bonus-click-button';
+            bonusButton.classList.add('bonus-click-button', 'bubbly-button');
             bonusButton.setAttribute("data-etage", etage.nom_minerai);
     
             let autoClickerButton = document.createElement('button');
             autoClickerButton.textContent = `Acheter Auto Clicker pour ${etage.nom_minerai} pour ${etage.prix_autoclick}`;
-            autoClickerButton.className = 'autoclicker-button';
+            autoClickerButton.classList.add('autoclicker-button', 'bubbly-button');
             autoClickerButton.setAttribute("data-etage", etage.nom_minerai);
     
 
@@ -97,11 +101,11 @@ class Game {
             // Ajouter des listeners pour les boutons avec vérification des points
             bonusButton.addEventListener('click', () => {
                 if (this.score >= etage.prix_bonus_click) {
-                    this.score -= etage.prix_bonus_click;  
+                    this.score -= etage.prix_bonus_click;
                     etage.nb_click += etage.nb_bonus_click; 
                     etage.production_par_click = etage.nb_bonus_click;
                     etage.nb_bonus_click_achete += 1
-                    etage.x_bonus_click_produit = Math.ceil(etage.nb_bonus_click_achete * etage.production_par_click)
+                    etage.x_bonus_click_produit = Math.ceil(etage.nb_bonus_click_achete * etage .production_par_click)
                     console.log(`Bonus click acheté pour ${etage.nom_minerai}`);
                     console.log(`Après achat, nb_bonus_click_achete: ${etage.nb_bonus_click_achete}, x_bonus_click_produit: ${etage.x_bonus_click_produit}`);
                     this.update_score();
@@ -141,8 +145,10 @@ class Game {
     
     timer(etage) {
         setInterval(() => {
-            this.score += etage.nb_autoclick;
-            etage.total_cookies_autoclicker += etage.nb_autoclick;
+            const pointsGagnes = etage.nb_autoclick * this.scoreMultiplier;  
+
+            this.score += pointsGagnes;
+            etage.total_cookies_autoclicker += pointsGagnes;
             this.update_score();
             this.updateAcheterButtons();
     
@@ -152,11 +158,11 @@ class Game {
     
             const autoIncrement = document.createElement('div');
             autoIncrement.className = 'score-increment';
-            autoIncrement.textContent = `+${etage.nb_autoclick}`;
+            autoIncrement.textContent = `+${pointsGagnes}`;
     
             const rect = img.getBoundingClientRect();
             const randomOffsetX = (Math.random() - 0.5) * 100; 
-            const randomOffsetY = (Math.random() - 0.5) * 50; 
+            const randomOffsetY = (Math.random() - 0.5) * 50 + 30; 
             autoIncrement.style.left = `${rect.left + rect.width / 2 + randomOffsetX}px`;
             autoIncrement.style.top = `${rect.top + randomOffsetY}px`;
     
@@ -168,7 +174,46 @@ class Game {
     
         }, 1000);
     }
+
+
+    click(etage) {
+        const parent = document.querySelector('#middle-section');
+        const etageDiv = parent.children[this.etages.indexOf(etage)];
+        const img = etageDiv.querySelector('img');
     
+        // Ajouter l'animation de zoom
+        img.classList.add('zoom');
+        setTimeout(() => {
+            img.classList.remove('zoom');
+        }, 100);
+    
+        const pointsGagnes = etage.nb_click * this.scoreMultiplier;
+    
+
+        // Créer l'élément de texte pour "+1" (le nombre de points ajoutés)
+        const scoreIncrement = document.createElement('div');
+        scoreIncrement.className = 'score-increment';
+        scoreIncrement.textContent = `+${pointsGagnes}`;
+    
+        const rect = img.getBoundingClientRect();
+        const randomOffsetX = (Math.random() - 0.5) * 100; 
+        const randomOffsetY = (Math.random() - 0.5) * 50 + 30; 
+        scoreIncrement.style.left = `${rect.left + rect.width / 2 + randomOffsetX}px`;
+        scoreIncrement.style.top = `${rect.top + randomOffsetY}px`;
+    
+        document.body.appendChild(scoreIncrement);
+    
+        setTimeout(() => {
+            scoreIncrement.remove();
+        }, 1000);
+    
+        this.score += pointsGagnes;
+        this.total_score += etage.nb_click; 
+        this.update_score();
+        this.updateAcheterButtons();
+        this.checkUnlockableEtages();
+    }
+
 
     checkUnlockableEtages() {
         this.etages.forEach((etage, index) => {
@@ -248,43 +293,49 @@ class Game {
         });
     }
 
-    click(etage) {
-        const parent = document.querySelector('#middle-section');
-        const etageDiv = parent.children[this.etages.indexOf(etage)];
-        const img = etageDiv.querySelector('img');
     
-        // Ajouter l'animation de zoom
-        img.classList.add('zoom');
+    
+
+    apparaitreBouleXP() {
+        const bouleXP = document.createElement("div");
+        bouleXP.classList.add("xp-boule");
+
+        const centerWidthPercentage = 60;  
+        const centerHeightPercentage = 40;
+
+        const leftBoundary = (100 - centerWidthPercentage) / 2; 
+        const topBoundary = (100 - centerHeightPercentage) / 2; 
+
+        bouleXP.style.left = `${leftBoundary + Math.random() * centerWidthPercentage}vw`;
+        bouleXP.style.top = `${topBoundary + Math.random() * centerHeightPercentage}vh`;
+
+        document.body.appendChild(bouleXP);
+
+        bouleXP.addEventListener("click", () => {
+            this.activerXPparClicMultiplier();
+            bouleXP.remove();
+        });
+
         setTimeout(() => {
-            img.classList.remove('zoom');
-        }, 100);
-    
-        // Créer l'élément de texte pour "+1" (ou le nombre de points ajoutés)
-        const scoreIncrement = document.createElement('div');
-        scoreIncrement.className = 'score-increment';
-        scoreIncrement.textContent = `+${etage.nb_click}`;
-    
-        const rect = img.getBoundingClientRect();
-        const randomOffsetX = (Math.random() - 0.5) * 100; 
-        const randomOffsetY = (Math.random() - 0.5) * 50; 
-        scoreIncrement.style.left = `${rect.left + rect.width / 2 + randomOffsetX}px`;
-        scoreIncrement.style.top = `${rect.top + randomOffsetY}px`;
-    
-        document.body.appendChild(scoreIncrement);
-    
+            bouleXP.remove(); 
+        }, 10000);  
+
         setTimeout(() => {
-            scoreIncrement.remove();
-        }, 1000);
-    
-        this.score += etage.nb_click;
-        this.total_score += etage.nb_click;
-        this.update_score();
-        this.updateAcheterButtons();
-        this.checkUnlockableEtages();
+            this.apparaitreBouleXP();
+        }, Math.random() * 10000 + 100000); 
     }
     
     
-    
+
+    activerXPparClicMultiplier() {
+        console.log("XP bonus activé pour 30 secondes !");
+        this.scoreMultiplier = 3;
+
+        setTimeout(() => {
+            this.scoreMultiplier = 1;
+            console.log("XP bonus terminé");
+        }, 30000); 
+    }
 
     update_dom(element, message) {
         element.textContent = message; 
@@ -297,3 +348,20 @@ class Game {
 }
 
 const game = new Game();
+
+
+var animateButton = function(e) {
+    e.preventDefault;
+    e.target.classList.remove('animate');
+    e.target.classList.add('animate');
+    setTimeout(function() {
+        e.target.classList.remove('animate');
+    }, 700);
+};
+
+var bubblyButtons = document.getElementsByClassName("bubbly-button");
+
+for (var i = 0; i < bubblyButtons.length; i++) {
+    bubblyButtons[i].addEventListener('click', animateButton, false);
+}
+

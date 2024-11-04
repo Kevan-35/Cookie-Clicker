@@ -1,6 +1,6 @@
 function updatePopupContent(button, popup, production_par_click, production_par_seconde, nb_bonus_click_achete, nb_autoclick_achete, x_bonus_click_produit, x_autoclick_produit, total_cookies_autoclicker) {
     popup.innerHTML = button.classList.contains('bonus-click-button')
-        ? `Ce bonus de clic produit ${production_par_click} cookies par clic.<br>
+        ? `Tu produit ${production_par_click} cookies par clic.<br>
         ${nb_bonus_click_achete} bonus click produits ${x_bonus_click_produit} cookies juqu’à présent.`
 
         : `Cet autoclicker produit ${production_par_seconde} par seconde.<br>
