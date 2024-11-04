@@ -312,7 +312,7 @@ body {
 
 /* Tout l'écran */
 
-.xp-boule {
+.bonus-doree {
     position: absolute;
     width: 100px;
     height: 120px;
@@ -344,4 +344,52 @@ body {
     100% {
         transform: translate(90, 46);
     }
+}
+
+
+
+/* Styles de la popup */
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Arrière-plan semi-transparent */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.overlay:target {
+    display: flex; /* Affiche l'overlay quand le lien est cliqué */
+}
+
+.popup {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.popup h2 {
+    margin: 0 0 10px;
+    font-size: 24px;
+}
+
+.popup .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    text-decoration: none;
+    color: #333333;
+}
+
+.popup .content {
+    font-size: 16px;
 }

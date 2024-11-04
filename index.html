@@ -9,38 +9,53 @@
     <script type="text/javascript" src="etage.js" defer></script>
     <script type="text/javascript" src="script.js" defer></script>
     <script type="text/javascript" src="popup.js" defer></script>
-
 </head>
 
 <body>
     <div class="background">
-    <div id="game-container">
+        <div id="game-container">
 
+            <!-- Partie gauche -->
+            <div id="left-section">
+                <div class="box">
+                    <a class="bubbly-button" href="#popup1">Règles</a> <!-- Bouton pour ouvrir la popup -->
+                </div>
 
-        <!-- Partie gauche -->
-        <div id="left-section">
-            <p id="score">Score : 0</p>
+                <p id="score">Score : 0</p>
+            </div>
+
+            <!-- Partie milieu -->
+            <div id="middle-section"></div>
+
+            <!-- Partie droite : Boutons d'achat -->
+            <div id="right-section">
+                <div id="elementToPopup_bonus" class="popup" style="display: none;"></div>
+                <div id="elementToPopup_autoclicker" class="popup" style="display: none;"></div>
+            </div>
+
+            <!-- Popup sans JavaScript -->
+            <div id="popup1" class="overlay">
+                <div class="popup">
+                    <h2>Règles</h2>
+                    <a class="close" href="#">&times;</a>
+                    <div class="content">
+                        But du Jeu : Accumulez des points en cliquant sur les différents minerais pour débloquer de nouveaux étages et augmenter vos gains. <br> <br>
+
+                        Étages et Minerais : Chaque étage offre un minerai spécifique. Cliquez sur les étages pour gagner des points. <br><br>
+
+                        Déblocage d’Étages : Atteignez le score requis pour débloquer les étages supérieurs. Un bouton d’achat s’affichera lorsque le score est suffisant. <br><br>
+
+                        Bonus Click : Achetez des bonus pour augmenter les points par clic d’un étage. Passez la souris sur le bouton pour voir la production du bonus. <br><br>
+
+                        Auto-Clickers : Les auto-clickers génèrent des points automatiquement. Achetez-les pour des gains réguliers et automatiques. <br><br>
+
+                        Bonus dorées : Des bonus dorées apparaissent aléatoirement. Cliquez dessus pour obtenir un multiplicateur de score temporaire.
+                    </div>
+                </div>
+            </div>
+
         </div>
-
-
-        <!-- Partie milieu -->
-        <div id="middle-section">
-            
-        </div>
-
-
-
-        <!-- Partie droite : Boutons d'achat -->
-
-        <!-- Achat bonus_click-->
-        <div id="right-section" >
-            <div id="elementToPopup_bonus" class="popup" style="display: none;"></div>
-
-            <div id="elementToPopup_autoclicker" class="popup" style="display: none;"></div>
-        </div>
-
     </div>
-</div>
 </body>
 
 </html>

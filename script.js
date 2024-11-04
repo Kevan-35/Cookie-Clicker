@@ -12,7 +12,7 @@ class Game {
         this.displayEtages();
 
         this.scoreMultiplier = 1;
-        this.apparaitreBouleXP();
+        this.apparaitreBonusDoree();
 
     }
 
@@ -102,12 +102,16 @@ class Game {
             bonusButton.addEventListener('click', () => {
                 if (this.score >= etage.prix_bonus_click) {
                     this.score -= etage.prix_bonus_click;
+                    etage.prix_bonus_click = Math.ceil(etage.prix_bonus_click * 1.15)
                     etage.nb_click += etage.nb_bonus_click; 
                     etage.production_par_click = etage.nb_bonus_click;
                     etage.nb_bonus_click_achete += 1
                     etage.x_bonus_click_produit = Math.ceil(etage.nb_bonus_click_achete * etage .production_par_click)
                     console.log(`Bonus click acheté pour ${etage.nom_minerai}`);
                     console.log(`Après achat, nb_bonus_click_achete: ${etage.nb_bonus_click_achete}, x_bonus_click_produit: ${etage.x_bonus_click_produit}`);
+                    
+                    bonusButton.textContent = `Acheter Bonus Click de ${etage.nom_minerai} pour ${etage.prix_bonus_click}`;
+
                     this.update_score();
                     initializePopups();
                 } else {
@@ -118,6 +122,7 @@ class Game {
             autoClickerButton.addEventListener('click', () => {
                 if (this.score >= etage.prix_autoclick) {
                     this.score -= etage.prix_autoclick; 
+                    etage.prix_autoclick = Math.ceil(etage.prix_autoclick * 1.15)
                     this.timer(etage);
                     etage.production_par_seconde = etage.nb_autoclick;
                     etage.nb_autoclick_achete += 1
@@ -126,8 +131,11 @@ class Game {
                     console.log(`Auto Clicker acheté pour ${etage.nom_minerai}`);
                     console.log(`Après achat, production_par_seconde: ${etage.production_par_seconde}, nb_autoclick_achete: ${etage.nb_autoclick_achete}, x_autoclick_produit: ${etage.x_autoclick_produit}, total_cookies_autoclicker: ${etage.total_cookies_autoclicker}`);
                     console.log(`Cet autoclicker produit ${etage.production_par_seconde} par seconde.<br>
-                        ${etage.nb_autoclick_achete} autoclickers produisant ${etage.x_autoclick_produit} score.<br>
-                        ${etage.total_cookies_autoclicker} cookies produits juqu’à présent`)
+                    ${etage.nb_autoclick_achete} autoclickers produisant ${etage.x_autoclick_produit} score.<br>
+                    ${etage.total_cookies_autoclicker} cookies produits juqu’à présent`)
+                    
+                        autoClickerButton.textContent = `Acheter Auto Clicker pour ${etage.nom_minerai} pour ${etage.prix_autoclick}`;
+
                     this.update_score();
                     initializePopups();
                 } else {
@@ -296,9 +304,9 @@ class Game {
     
     
 
-    apparaitreBouleXP() {
-        const bouleXP = document.createElement("div");
-        bouleXP.classList.add("xp-boule");
+    apparaitreBonusDoree() {
+        const BonusDoree = document.createElement("div");
+        BonusDoree.classList.add("bonus-doree");
 
         const centerWidthPercentage = 60;  
         const centerHeightPercentage = 40;
@@ -306,22 +314,22 @@ class Game {
         const leftBoundary = (100 - centerWidthPercentage) / 2; 
         const topBoundary = (100 - centerHeightPercentage) / 2; 
 
-        bouleXP.style.left = `${leftBoundary + Math.random() * centerWidthPercentage}vw`;
-        bouleXP.style.top = `${topBoundary + Math.random() * centerHeightPercentage}vh`;
+        BonusDoree.style.left = `${leftBoundary + Math.random() * centerWidthPercentage}vw`;
+        BonusDoree.style.top = `${topBoundary + Math.random() * centerHeightPercentage}vh`;
 
-        document.body.appendChild(bouleXP);
+        document.body.appendChild(BonusDoree);
 
-        bouleXP.addEventListener("click", () => {
+        BonusDoree.addEventListener("click", () => {
             this.activerXPparClicMultiplier();
-            bouleXP.remove();
+            BonusDoree.remove();
         });
 
         setTimeout(() => {
-            bouleXP.remove(); 
+            BonusDoree.remove(); 
         }, 10000);  
 
         setTimeout(() => {
-            this.apparaitreBouleXP();
+            this.apparaitreBonusDoree();
         }, Math.random() * 10000 + 100000); 
     }
     
