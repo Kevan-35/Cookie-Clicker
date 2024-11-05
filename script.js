@@ -17,41 +17,60 @@ class Game {
     }
 
     initEtage() {
-        this.etages.push(new Etage(1, "Pierre", "images/minerai/pierre.png", 1, 10, true, 6, 15, 1, 20));
-        this.etages.push(new Etage(2, "Or", "images/minerai/or.png", 100, 10, false, 5, 100, 5, 200));
-        this.etages.push(new Etage(3, "Diament", "images/minerai/diament.png", 1000, 100, false, 10, 1000, 20, 1000));
-        this.etages.push(new Etage(4, "Emeraude", "images/minerai/emeraude.png", 10000, 1000, false, 20, 10000, 50, 10000));
+        this.etages.push(new Etage(1, "Pierre", "images/minerai/pierre.png", 1, 0, true, 1, 10, 1, )); // Valeurs de base
+        this.etages.push(new Etage(2, "Or", "images/minerai/or.png", 10, 2000, false, 8, 50, 10, 30)); // Augmente les bénéfices et les coûts
+        this.etages.push(new Etage(3, "Diament", "images/minerai/diament.png", 25, 10000, false, 80, 1000, 25, 130)); // Coûts et gains plus élevés
+        this.etages.push(new Etage(4, "Emeraude", "images/minerai/emeraude.png", 50, 25000, false, 112, 2500, 50, 570)); // Valeurs plus élevées
+        this.etages.push(new Etage(5, "Rose", "images/minerai/pierre_rose.png", 100, 50000, false, 150, 5000, 100, 980)); // Dernier étage avec des valeurs significatives
     }
+    
+    
+    
 
     displayEtages() {
         let parent = document.querySelector('#middle-section');
         parent.innerHTML = ''; 
-
+    
         this.etages.forEach((etage, index) => {
             let html_etage = document.createElement('div');
             html_etage.className = "etage";
-            html_etage.title = 'click moi dessus!';
-
+            html_etage.title = 'Cliquez dessus !';
+    
+            // Créer un conteneur pour le minerai
+            let imgContainer = document.createElement('div');
+            imgContainer.className = 'minerai-container';
+    
             let img = document.createElement('img');
             img.src = etage.image_minerai;
             img.draggable = false;
-            img.alt = "image à clicker";
+            img.alt = "image à cliquer";
             
-            html_etage.appendChild(img);
+            imgContainer.appendChild(img);
+            html_etage.appendChild(imgContainer);
+    
+            // Créer un élément pour le cadenas
+            let lockIcon = document.createElement('img');
+            lockIcon.src = "images/cadenas-verrouille.png"; // Assurez-vous que le chemin est correct
+            lockIcon.className = 'lock-icon';  // Classe pour le style CSS
+            lockIcon.draggable = false;
+    
+            html_etage.appendChild(lockIcon);
+    
             html_etage.addEventListener("click", () => this.click(etage));
             parent.appendChild(html_etage);
-
+    
             // Afficher les boutons à droite si l'étage est acheté
             this.displayButtonsForEtage(etage);
         });
-
+    
         this.checkUnlockableEtages(); 
         this.updateAcheterButtons();  
     }
+        
 
     displayButtonsForEtage(etage) {
         let rightSection = document.querySelector('#right-section');
-
+    
         // Vérifier si les boutons pour cet étage existent déjà
         if (document.querySelector(`.bonus-click-button[data-etage="${etage.nom_minerai}"]`) || 
             document.querySelector(`.autoclicker-button[data-etage="${etage.nom_minerai}"]`)) {
@@ -63,7 +82,13 @@ class Game {
             let etageContainer = document.createElement('div');
             etageContainer.className = 'etage-container';
             etageContainer.style.marginBottom = '12px';
-
+    
+            // Ajoutez un en-tête pour les améliorations
+            let header = document.createElement('h4'); // Changez <h4> à <h3> ou autre si nécessaire
+            header.textContent = `Améliorations ${etage.nom_minerai}`;
+            header.classList.add('white-text'); // Ajoutez la classe ici
+            etageContainer.appendChild(header); // Ajoutez l'en-tête au conteneur
+    
             let bonusButton = document.createElement('button');
             bonusButton.textContent = `Acheter Bonus Click de ${etage.nom_minerai} pour ${etage.prix_bonus_click}`;
             bonusButton.classList.add('bonus-click-button', 'bubbly-button');
@@ -74,7 +99,6 @@ class Game {
             autoClickerButton.classList.add('autoclicker-button', 'bubbly-button');
             autoClickerButton.setAttribute("data-etage", etage.nom_minerai);
     
-
             // Ajoutez les popups ici
             bonusButton.addEventListener('mouseenter', function() {
                 const popupBonus = document.getElementById("elementToPopup_bonus");
@@ -87,7 +111,7 @@ class Game {
             bonusButton.addEventListener('mouseleave', function() {
                 document.getElementById("elementToPopup_bonus").style.display = 'none';
             });
-
+    
             autoClickerButton.addEventListener('mouseenter', function() {
                 const popupAutoclicker = document.getElementById("elementToPopup_autoclicker");
                 popupAutoclicker.style.display = 'block';
@@ -96,22 +120,21 @@ class Game {
                 popupAutoclicker.style.left = rect.left + "px";
                 popupAutoclicker.style.top = (rect.top + rect.height) + "px";
             });
-
-
+    
             // Ajouter des listeners pour les boutons avec vérification des points
             bonusButton.addEventListener('click', () => {
                 if (this.score >= etage.prix_bonus_click) {
                     this.score -= etage.prix_bonus_click;
-                    etage.prix_bonus_click = Math.ceil(etage.prix_bonus_click * 1.15)
+                    etage.prix_bonus_click = Math.ceil(etage.prix_bonus_click * 1.15);
                     etage.nb_click += etage.nb_bonus_click; 
                     etage.production_par_click = etage.nb_bonus_click;
-                    etage.nb_bonus_click_achete += 1
-                    etage.x_bonus_click_produit = Math.ceil(etage.nb_bonus_click_achete * etage .production_par_click)
+                    etage.nb_bonus_click_achete += 1;
+                    etage.x_bonus_click_produit = Math.ceil(etage.nb_bonus_click_achete * etage.production_par_click);
                     console.log(`Bonus click acheté pour ${etage.nom_minerai}`);
                     console.log(`Après achat, nb_bonus_click_achete: ${etage.nb_bonus_click_achete}, x_bonus_click_produit: ${etage.x_bonus_click_produit}`);
                     
                     bonusButton.textContent = `Acheter Bonus Click de ${etage.nom_minerai} pour ${etage.prix_bonus_click}`;
-
+    
                     this.update_score();
                     initializePopups();
                 } else {
@@ -122,20 +145,20 @@ class Game {
             autoClickerButton.addEventListener('click', () => {
                 if (this.score >= etage.prix_autoclick) {
                     this.score -= etage.prix_autoclick; 
-                    etage.prix_autoclick = Math.ceil(etage.prix_autoclick * 1.15)
+                    etage.prix_autoclick = Math.ceil(etage.prix_autoclick * 1.15);
                     this.timer(etage);
                     etage.production_par_seconde = etage.nb_autoclick;
-                    etage.nb_autoclick_achete += 1
-                    etage.x_autoclick_produit = Math.ceil(etage.nb_autoclick_achete * etage.production_par_seconde)
-                    console.log(this.score)
+                    etage.nb_autoclick_achete += 1;
+                    etage.x_autoclick_produit = Math.ceil(etage.nb_autoclick_achete * etage.production_par_seconde);
+                    console.log(this.score);
                     console.log(`Auto Clicker acheté pour ${etage.nom_minerai}`);
                     console.log(`Après achat, production_par_seconde: ${etage.production_par_seconde}, nb_autoclick_achete: ${etage.nb_autoclick_achete}, x_autoclick_produit: ${etage.x_autoclick_produit}, total_cookies_autoclicker: ${etage.total_cookies_autoclicker}`);
                     console.log(`Cet autoclicker produit ${etage.production_par_seconde} par seconde.<br>
                     ${etage.nb_autoclick_achete} autoclickers produisant ${etage.x_autoclick_produit} score.<br>
-                    ${etage.total_cookies_autoclicker} cookies produits juqu’à présent`)
+                    ${etage.total_cookies_autoclicker} cookies produits jusqu’à présent`);
                     
-                        autoClickerButton.textContent = `Acheter Auto Clicker pour ${etage.nom_minerai} pour ${etage.prix_autoclick}`;
-
+                    autoClickerButton.textContent = `Acheter Auto Clicker pour ${etage.nom_minerai} pour ${etage.prix_autoclick}`;
+    
                     this.update_score();
                     initializePopups();
                 } else {
@@ -148,8 +171,8 @@ class Game {
             etageContainer.appendChild(autoClickerButton);
             rightSection.appendChild(etageContainer);
         }
-        
     }
+    
     
     timer(etage) {
         setInterval(() => {
@@ -225,65 +248,76 @@ class Game {
         this.boostEtage3(etage);
     }
 
-    boostEtage3(etage) {
-        if (etage.id === 1 && etage.points_gagnes_click >= 4000) { 
-            const etageSuperieur = this.etages[2]; 
-            etageSuperieur.nb_click *= 1.1; 
-            etageSuperieur.nb_autoclick *= 1.1; 
-            console.log(`La production de ${etageSuperieur.nom_minerai} a été augmentée de 10%!`);
-            etage.points_gagnes_click = 0; 
-        }
-    }
+    
 
     checkUnlockableEtages() {
         this.etages.forEach((etage, index) => {
             let parent = document.querySelector('#middle-section');
             let etageDiv = parent.children[index]; 
-
+    
             if (etage.est_achete) {
+                // Retirer la classe de verrouillage et l'icône si l'étage est acheté
+                etageDiv.classList.remove('locked');
                 etageDiv.style.cursor = 'pointer';
                 etageDiv.style.pointerEvents = 'auto'; 
                 etageDiv.style.opacity = '1';  
+    
+                // Retirer le cadenas s'il existe
+                let img_cadenas = etageDiv.querySelector('img[src="images/cadenas-verrouille.png"]');
+                if (img_cadenas) {
+                    etageDiv.removeChild(img_cadenas);
+                }
+    
             } else if (this.score >= etage.prix_etage) {
-
-                let img_cadenas = etageDiv.querySelector('img[src="images/lock.png"]');
-                if (img_cadenas) etageDiv.removeChild(img_cadenas);
-
+                // Déverrouiller l'étage
+                etageDiv.classList.remove('locked'); // Retire la classe de verrou
                 let acheterButton = etageDiv.querySelector('.acheter-button');
                 if (!acheterButton) {
                     acheterButton = document.createElement('button');
                     acheterButton.className = 'acheter-button';
                     acheterButton.textContent = `Acheter ${etage.nom_minerai} pour ${etage.prix_etage}`;
                     etageDiv.appendChild(acheterButton);
-
+    
                     acheterButton.addEventListener('click', () => {
                         etage.est_achete = true;
                         this.score -= etage.prix_etage;
-                        this.displayEtages();
+                        this.displayEtages(); // Met à jour l'affichage des étages
                         this.update_score();
                         initializePopups();
                     });
                 }
-
-                etageDiv.style.cursor = 'not-allowed';
-                etageDiv.style.pointerEvents = 'none'; 
-                acheterButton.style.pointerEvents = 'auto'; 
-                etageDiv.style.opacity = '0.5'; 
+    
+                etageDiv.style.cursor = 'pointer';
+                etageDiv.style.pointerEvents = 'auto'; 
+                etageDiv.style.opacity = '1'; 
+    
+                // Retirer le cadenas s'il existe
+                let img_cadenas = etageDiv.querySelector('img[src="images/cadenas-verrouille.png"]');
+                if (img_cadenas) {
+                    etageDiv.removeChild(img_cadenas);
+                }
+    
             } else {
+                // Ajouter la classe de verrouillage et afficher le cadenas
+                etageDiv.classList.add('locked'); 
                 etageDiv.style.cursor = 'not-allowed';
                 etageDiv.style.pointerEvents = 'none';
-                etageDiv.style.opacity = '0.5';
-
-                let img_cadenas = etageDiv.querySelector('img[src="images/lock.png"]');
+                etageDiv.style.opacity = '0.5'; // Rendre l'étage moins visible
+    
+                // Ajout d'un cadenas s'il n'existe pas déjà
+                let img_cadenas = etageDiv.querySelector('img[src="images/cadenas-verrouille.png"]');
                 if (!img_cadenas) {
                     img_cadenas = document.createElement('img');
-                    img_cadenas.src = "images/lock.png";
+                    img_cadenas.src = "images/cadenas-verrouille.png";
+                    img_cadenas.className = "lock-icon";  // Appliquer la classe pour le style
                     img_cadenas.draggable = false;
                     etageDiv.appendChild(img_cadenas);
                 }
             }
         });
     }
+    
+    
 
     updateAcheterButtons() {
         this.etages.forEach((etage, index) => {
@@ -332,7 +366,7 @@ class Game {
         document.body.appendChild(BonusDoree);
 
         BonusDoree.addEventListener("click", () => {
-            this.activerXPparClicMultiplier();
+            this.activerBonusDoreParClicMultiplier();
             BonusDoree.remove();
         });
 
@@ -345,15 +379,24 @@ class Game {
         }, Math.random() * 10000 + 100000); 
     }
     
-    
+    boostEtage3(etage) {
+        if (etage.id === 1 && etage.points_gagnes_click >= 4000) { 
+            const etageSuperieur = this.etages[2]; 
+            etageSuperieur.nb_click *= 1.1; 
+            etageSuperieur.nb_autoclick *= 1.1; 
+            console.log(`La production de ${etageSuperieur.nom_minerai} a été augmentée de 10%!`);
+            etage.points_gagnes_click = 0; 
+        }
+    }
 
-    activerXPparClicMultiplier() {
-        console.log("XP bonus activé pour 30 secondes !");
+    activerBonusDoreParClicMultiplier() {
+        console.log("Bonus doré activé pour 30 secondes !");
+        alert("Bonus doré activé pour 30 secondes !")
         this.scoreMultiplier = 3;
 
         setTimeout(() => {
             this.scoreMultiplier = 1;
-            console.log("XP bonus terminé");
+            console.log("Bonus doré terminé");
         }, 30000); 
     }
 

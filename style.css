@@ -37,6 +37,8 @@ body {
     color: white;
 }
 
+
+
 #left-section img {
     width: 150px;
     height: 150px;
@@ -50,30 +52,61 @@ body {
 
 /* Section milieu (avec les étages) */
 #middle-section {
+    height: 100%; /* Hauteur fixe pour le conteneur parent */
+    overflow-y: auto; /* Permet le défilement vertical */
+    padding: 10px; /* Optionnel : Ajoute un peu d'espace autour */
+    border: 1px solid #ccc; /* Optionnel : Pour visualiser le conteneur */
     flex: 2;
-    display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     overflow-y: auto;
-    padding: 10px;
-    border-left: 4px solid #ffffff;
-    border-right: 4px solid hsl(0, 0%, 100%);
+
 }
 
 .etage {
-    background-image: url("images/etages/grotte.png");
-    background-size: cover; /* L'image couvre tout l'écran */
+    background-image: url("images/planche_bois.png");
+    background-size: cover; /* L'image couvre le conteneur */
     background-position: center; /* Centré */
     width: 90%;
-    height: 30%;
+    height: 27%; /* Hauteur fixe pour uniformiser tous les étages */
     display: flex;
     justify-content: center;
-    align-items: center;
-    border: 2px solid #ffffff;
+    align-items: center; /* Centrage vertical */
     border-radius: 10px;
     margin-bottom: 20px;
+    overflow: hidden; /* Cache le débordement si l'image est trop grande */
+    padding: 10px;
+    
 }
+
+
+.minerai-container {
+    flex: 1; /* Permet au conteneur du minerai de prendre l'espace disponible */
+}
+
+.lock-icon {
+    width: 20px; /* Ajustez la taille de l'icône du cadenas */
+    height: auto; /* Conserve le ratio de l'image */
+}
+
+.etage img {
+    height: 60%; /* Ajuste la hauteur de l'image pour qu'elle remplisse le conteneur */
+    width: auto; /* Laisse la largeur s'ajuster automatiquement */
+    max-width: 100%; /* Ne pas dépasser la largeur de son conteneur */
+    object-fit: contain; /* Maintenir les proportions de l'image */
+    margin-right: 30px;
+    margin-left: 30px;
+}
+
+
+
+.etage.locked {
+    filter: grayscale(80%); /* Rend l'image en niveaux de gris */
+    pointer-events: none; /* Désactive les interactions */
+}
+
+
 
 .etage p {
     font-size: 1.5em;
@@ -129,15 +162,15 @@ body {
     padding: 15px 30px;
     font-size: 1.2em;
     cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
+    background-color: #0836a4;
+    color: rgb(255, 255, 255);
     border: none;
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 
 #right-section button:hover {
-    background-color: #45a049;
+    background-color: #0d0871;
 }
 
 .etage-container {
@@ -190,10 +223,10 @@ body {
 
 /* Couleurs principales */
 :root {
-    --fuschia: #10d4d4;
-    --button-bg: #5eff00;
-    --button-text-color: #fff;
-    --baby-blue: #f8faff;
+    --fuschia: #ba2323;
+    --button-bg: #cecece;
+    --button-text-color: #000000;
+    --baby-blue: #071f5b;
 }
 
 /* Style du body */
@@ -219,7 +252,7 @@ body {
     cursor: pointer;
     position: relative;
     transition: transform ease-in 0.1s, box-shadow ease-in 0.25s;
-    box-shadow: 0 2px 25px rgba(44, 213, 216, 0.5);
+    box-shadow: 0 2px 25px rgba(255, 255, 255, 0.5);
 }
 
 .bubbly-button:focus {
@@ -393,3 +426,59 @@ body {
 .popup .content {
     font-size: 16px;
 }
+
+
+.acheter-button {
+    background-color: #212121; /* Couleur de fond sombre */
+    color: #fff; /* Couleur du texte blanche */
+    border: none; /* Supprime la bordure par défaut */
+    padding: 10px 20px; /* Espacement intérieur */
+    font-size: 16px; /* Taille de la police */
+    cursor: pointer; /* Curseur en forme de main */
+    border-radius: 5px; /* Coins arrondis */
+    transition: background-color 0.3s, transform 0.3s; /* Transition douce pour l'effet de survol */
+    box-shadow: 0 3px 25px rgba(44, 213, 216, 0.5);
+}
+
+.acheter-button:hover {
+    background-color: #333232; /* Couleur de fond légèrement plus claire au survol */
+    transform: scale(1.05); /* Légère augmentation de la taille au survol */
+}
+
+.white-text {
+    color: white; /* Met le texte en blanc */
+}
+
+
+#left-section {
+    display: flex; /* Utilisation de Flexbox pour centrer */
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    height: 100vh; /* Prend toute la hauteur de la fenêtre */
+}
+
+#container {
+    padding: 20px; /* Espace autour de la section */
+    background-color: #2c3e50; /* Couleur de fond de la section */
+    color: white; /* Couleur du texte de la section */
+    border-radius: 12px; /* Coins arrondis */
+    height: 65%; /* Hauteur automatique */
+    width: 90%; /* Largeur de 50% */
+}
+
+.score-block {
+    width: 50%; /* Largeur de 50% */
+    margin: 20px auto; /* Centre le bloc horizontalement */
+    padding: 15px; /* Espace interne */
+    background-color: rgba(255, 255, 255, 0.2); /* Fond semi-transparent pour le bloc */
+    border: 1px solid white; /* Bordure blanche */
+    border-radius: 8px; /* Coins arrondis */
+    text-align: center; /* Centre le texte à l'intérieur du bloc */
+}
+
+#score {
+    font-size: 24px; /* Taille de police du score */
+    font-weight: bold; /* Texte en gras pour le score */
+}
+
+
