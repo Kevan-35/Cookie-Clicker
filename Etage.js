@@ -19,5 +19,5 @@ class Etage{
 		this.total_cookies_autoclicker = total_cookies_autoclicker
 		this.points_gagnes_click  = points_gagnes_click 
 	}
-}
+} 
 
