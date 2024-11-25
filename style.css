@@ -114,7 +114,7 @@ body {
 }
 
 .zoom { 
-    transform: scale(1.15); 
+    transform: scale(0.85); 
     transition: transform 0.1s ease; 
     z-index: 1; 
 }
@@ -205,14 +205,51 @@ body {
 /* Popup hover */
 #elementToPopup_bonus, #elementToPopup_autoclicker, #elementToPopup_max_attente, #elementToPopup_transport {
     display: none;
+    vertical-align: middle;
     position: absolute;
-    top: 30px;
-    left: 7px;
-    background-color: #555;
-    color: #fff;
-    padding: 8px;
-    border-radius: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 100%;
+    margin-right: 15px;
+    background: linear-gradient(145deg, #2c3e50, #34495e);
+    color: #ecf0f1;
+    padding: 15px 20px;
+    border-radius: 8px;
     z-index: 999;
+    width: max-content;
+    min-width: 200px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    font-size: 14px;
+    line-height: 1.4;
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(5px);
+    font-weight: 500;
+}
+
+#elementToPopup_bonus, #elementToPopup_autoclicker {
+    position: fixed;
+    left: auto;
+    right: unset;
+    margin-right: 0;
+    transform: translateX(-100%) translateY(-50%);
+}
+#elementToPopup_bonus::after, 
+#elementToPopup_autoclicker::after {
+    content: '';
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent transparent #34495e;
+    filter: drop-shadow(2px 0 2px rgba(0,0,0,0.1));
+}
+
+#elementToPopup_bonus:hover, 
+#elementToPopup_autoclicker:hover {
+    transform: translateY(-50%) scale(1.02);
+    transition: transform 0.2s ease;
 }
 
 .hiddenimg {
