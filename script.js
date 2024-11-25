@@ -17,11 +17,69 @@ class Game {
     }
 
     initEtage() {
-        this.etages.push(new Etage(1, "Pierre", "images/minerai/pierre.png", 1, 0, true, 1, 10, 1, )); // Valeurs de base
-        this.etages.push(new Etage(2, "Or", "images/minerai/or.png", 10, 2000, false, 8, 50, 10, 30)); // Augmente les bénéfices et les coûts
-        this.etages.push(new Etage(3, "Diament", "images/minerai/diament.png", 25, 10000, false, 80, 1000, 25, 130)); // Coûts et gains plus élevés
-        this.etages.push(new Etage(4, "Emeraude", "images/minerai/emeraude.png", 50, 25000, false, 112, 2500, 50, 570)); // Valeurs plus élevées
-        this.etages.push(new Etage(5, "Rose", "images/minerai/pierre_rose.png", 100, 50000, false, 150, 5000, 100, 980)); // Dernier étage avec des valeurs significatives
+        this.etages.push(new Etage({
+            id: 1,
+            nom_minerai: "Pierre",
+            image_minerai: "images/minerai/pierre.png",
+            nb_click: 1,
+            prix_etage: 0,
+            est_achete: true,
+            nb_autoclick: 1,
+            prix_autoclick: 10,
+            nb_bonus_click: 1
+        }));
+    
+        this.etages.push(new Etage({
+            id: 2,
+            nom_minerai: "Or",
+            image_minerai: "images/minerai/or.png",
+            nb_click: 10,
+            prix_etage: 2000,
+            est_achete: false,
+            nb_autoclick: 8,
+            prix_autoclick: 50,
+            nb_bonus_click: 10,
+            prix_bonus_click: 30
+        }));
+    
+        this.etages.push(new Etage({
+            id: 3,
+            nom_minerai: "Diament",
+            image_minerai: "images/minerai/diament.png",
+            nb_click: 25,
+            prix_etage: 10000,
+            est_achete: false,
+            nb_autoclick: 80,
+            prix_autoclick: 1000,
+            nb_bonus_click: 25,
+            prix_bonus_click: 130
+        }));
+    
+        this.etages.push(new Etage({
+            id: 4,
+            nom_minerai: "Emeraude",
+            image_minerai: "images/minerai/emeraude.png",
+            nb_click: 50,
+            prix_etage: 25000,
+            est_achete: false,
+            nb_autoclick: 112,
+            prix_autoclick: 2500,
+            nb_bonus_click: 50,
+            prix_bonus_click: 570
+        }));
+    
+        this.etages.push(new Etage({
+            id: 5,
+            nom_minerai: "Rose",
+            image_minerai: "images/minerai/pierre_rose.png",
+            nb_click: 100,
+            prix_etage: 50000,
+            est_achete: false,
+            nb_autoclick: 150,
+            prix_autoclick: 5000,
+            nb_bonus_click: 100,
+            prix_bonus_click: 980
+        }));
     }
     
     
@@ -99,28 +157,20 @@ class Game {
             autoClickerButton.classList.add('autoclicker-button', 'bubbly-button');
             autoClickerButton.setAttribute("data-etage", etage.nom_minerai);
     
-            // Ajoutez les popups ici
             bonusButton.addEventListener('mouseenter', function() {
                 const popupBonus = document.getElementById("elementToPopup_bonus");
                 popupBonus.style.display = 'block';
-                popupBonus.textContent = `Ce bonus de click produit ${etage.nb_bonus_click} par clic.`;
                 const rect = bonusButton.getBoundingClientRect();
-                popupBonus.style.left = rect.left + "px";
-                popupBonus.style.top = (rect.top + rect.height) + "px";
+                popupBonus.style.top = rect.top + "px";
             });
-            bonusButton.addEventListener('mouseleave', function() {
-                document.getElementById("elementToPopup_bonus").style.display = 'none';
-            });
-    
+            
             autoClickerButton.addEventListener('mouseenter', function() {
                 const popupAutoclicker = document.getElementById("elementToPopup_autoclicker");
                 popupAutoclicker.style.display = 'block';
-                popupAutoclicker.textContent = `Cet autoclicker produit ${etage.nb_autoclick} par seconde.`;
                 const rect = autoClickerButton.getBoundingClientRect();
-                popupAutoclicker.style.left = rect.left + "px";
-                popupAutoclicker.style.top = (rect.top + rect.height) + "px";
+                popupAutoclicker.style.top = rect.top + "px";
             });
-    
+            
             // Ajouter des listeners pour les boutons avec vérification des points
             bonusButton.addEventListener('click', () => {
                 if (this.score >= etage.prix_bonus_click) {
